@@ -10,23 +10,18 @@ import { useDrawerNavigation } from '../../hooks/useDrawerNavigation';
 import { useSchedule } from '../../hooks/useSchedule';
 import { Layout } from '../../providers/Layout';
 
-export const ScheduleNewScreen = () => {
+export const ScheduleTimeOptionsScreen = () => {
   const { navigate } = useDrawerNavigation();
-  const { scheduleAt, setScheduleAt } = useSchedule();
+  const { scheduleAt } = useSchedule();
 
   return (
     <Layout header={<Header onPressBack={() => navigate(Screen.Home)} />}>
-      <Page title="Escolha a Data" color="blue">
-        <Calendar
-          selected={scheduleAt ? scheduleAt : undefined}
-          onChange={(dt) => setScheduleAt(dt)}
-        />
-      </Page>
+      <Page title="Escolha o Horário" color="blue"></Page>
       <PageFooter
         buttons={[
           {
             ...BackButton,
-            onPress: () => navigate(Screen.Home),
+            onPress: () => navigate(Screen.ScheduleNew),
           },
           {
             ...ContinueButton,
