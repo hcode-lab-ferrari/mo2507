@@ -11,8 +11,12 @@ import { AuthProvider } from './providers/Auth';
 import { AppProvider } from './providers/App';
 import { ProfileScreen } from './screens/ProfileScreen';
 import { ScheduleProvider } from './providers/Schedule';
-import { ScheduleTimeOptionsScreen } from './screens/ScheduleTimeOptions';
+import { ScheduleTimeOptionsScreen } from './screens/ScheduleTimeOptionsScreen';
 import { ScheduleServicesScreen } from './screens/ScheduleServicesScreen';
+import { ScheduleSummaryScreen } from './screens/ScheduleSummaryScreen';
+import { ScheduleCompleteScreen } from './screens/ScheduleCompleteScreen';
+import { ScheduleAddressesScreen } from './screens/ScheduleAddressesScreen';
+import { ScheduleAddressesCreateScreen } from './screens/ScheduleAddressesCreateScreen';
 
 const Drawer = createDrawerNavigator<typeof Screens>();
 
@@ -46,6 +50,22 @@ export default function App() {
               <Drawer.Screen
                 name={Screen.ScheduleServices}
                 component={ScheduleServicesScreen}
+              />
+              <Drawer.Screen
+                name={Screen.ScheduleAddresses}
+                component={ScheduleAddressesScreen}
+              />
+              <Drawer.Screen
+                name={Screen.ScheduleAddressesCreate}
+                component={ScheduleAddressesCreateScreen}
+              />
+              <Drawer.Screen
+                name={Screen.ScheduleSummary}
+                component={ScheduleSummaryScreen}
+              />
+              <Drawer.Screen
+                name={Screen.ScheduleComplete}
+                component={ScheduleCompleteScreen}
               />
               <Drawer.Screen name={Screen.Auth} component={AuthScreen} />
               <Drawer.Screen name={Screen.Profile} component={ProfileScreen} />
