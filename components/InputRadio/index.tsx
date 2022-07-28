@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components/native"
 import { vars } from "../../values";
 
@@ -20,14 +20,17 @@ const InputRadioChecked = styled.View`
 
 type InputRadioProps = {
     checked: boolean;
+    onChange: () => void;
 }
 
-export const InputRadio = ({ checked }: InputRadioProps) => {
+export const InputRadio = ({ checked, onChange }: InputRadioProps) => {
 
     const [isChecked, setIsChecked] = useState(checked);
 
+    useEffect(() => setIsChecked(checked), [checked]);
+
     return (
-        <InputRadioWrap>
+        <InputRadioWrap onPress={() => onChange()}>
             {isChecked && <InputRadioChecked />}
         </InputRadioWrap>
     )

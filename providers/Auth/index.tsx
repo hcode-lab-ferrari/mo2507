@@ -76,7 +76,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .catch(catchAxiosError)
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [redirectToNextScreen]);
 
   const onSubmitLogin = useCallback((data: FormDataLoginType) => {
     setIsLoading(true);
@@ -92,7 +92,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       })
       .catch(catchAxiosError)
       .finally(() => setIsLoading(false));
-  }, []);
+  }, [redirectToNextScreen]);
 
   const onSubmitForget = useCallback(() => {
     setIsLoading(true);

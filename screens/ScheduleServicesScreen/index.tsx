@@ -92,7 +92,7 @@ export const ScheduleServicesScreen = () => {
 
   return (
     <Layout
-      header={<Header onPressBack={() => navigate(Screen.ScheduleNew)} />}
+      header={<Header onPressBack={() => navigate(Screen.ScheduleTimeOptions)} />}
     >
       <ScheduleServiceProvider>
         <ScheduleServie />

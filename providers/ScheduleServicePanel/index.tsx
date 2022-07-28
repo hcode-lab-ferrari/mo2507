@@ -35,7 +35,6 @@ export const ScheduleServicePanelProvider = ({
       }
     },
     onActive(event, context) {
-      console.log(panelY.value);
       const newValue = (context as any).startPanelY + event.translationY;
       if (newValue > 0) {
         panelY.value = newValue;

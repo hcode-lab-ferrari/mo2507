@@ -9,15 +9,12 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
   const [scheduleAt, setScheduleAt] = useState<Date | null>(new Date());
   const [timeOptionId, setTimeOptionId] = useState<number | null>(null);
   const [services, setServices] = useState<number[]>([]);
+  const [billingAddressId, setBillingAddressId] = useState<number | null>(null);
 
   const addService = useCallback(
     (serviceId: number) => {
-      console.log('atual', services);
-      console.log('adiconando', serviceId);
-
       const newServices: number[] = [...services];
       newServices.push(serviceId);
-      console.log('newServices', newServices);
       setServices([...newServices]);
     },
     [services, setServices]
@@ -25,11 +22,7 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
 
   const removeService = useCallback((serviceId: number) => {
     setServices([...services.filter((id) => id !== serviceId)]);
-  }, []);
-
-  useEffect(() => {
-    console.log('services change', services);
-  }, [services]);
+  }, [services, setServices]);
 
   return (
     <ScheduleContext.Provider
@@ -42,6 +35,8 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
         setServices,
         addService,
         removeService,
+        billingAddressId,
+        setBillingAddressId,
       }}
     >
       {children}

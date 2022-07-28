@@ -22,6 +22,9 @@ import { useScreenFocus } from '../../utils/useScreenFocus';
 import { Button } from '../../components/Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import { InputRadio } from '../../components/InputRadio';
+import { Address } from '../../types/Address';
+import { useAuth } from '../../hooks/useAuth';
+import { useWithAuthenticated } from '../../utils/useWithAuthenticated';
 
 const ScheduleAddressesHeader = styled.View`
     border-bottom-width: 1px;
@@ -29,7 +32,7 @@ const ScheduleAddressesHeader = styled.View`
     padding-bottom: ${vars.spacePx};
 `;
 
-const ScheduleAddressesItemWrap = styled.View`
+const ScheduleAddressesItemWrap = styled.TouchableOpacity`
     flex-direction: row;
     border-bottom-width: 1px;
     border-bottom-color: ${vars.gray3};
@@ -46,61 +49,94 @@ const ScheduleAddressesItemDetailsText = styled.Text`
     color: ${vars.dark0};
 `;
 
-const ScheduleAddressesItem = () => {
+type ScheduleAddressesItemProps = {
+  data: Address;
+  selected: boolean;
+  onSelected: (id: number) => void;
+}
 
-    return (
-        <ScheduleAddressesItemWrap>
-            <ScheduleAddressesItemInput>
-                <InputRadio
-                    checked={true}
-                />
-            </ScheduleAddressesItemInput>
-            <ScheduleAddressesItemDetails>
-                <ScheduleAddressesItemDetailsText>Av. Paulista, 500</ScheduleAddressesItemDetailsText>
+const ScheduleAddressesItem = ({
+  data: {
+    street,
+    number,
+    district,
+    city,
+    state,
+    zipCode,
+    id,
+  },
+  selected,
+  onSelected,
+}: ScheduleAddressesItemProps) => {
 
-                <ScheduleAddressesItemDetailsText>Bela Vista</ScheduleAddressesItemDetailsText>
+  const { navigate } = useDrawerNavigation();
+  
+  const [selectedAddress, setSelectedAddress] = useState(selected);
 
-                <ScheduleAddressesItemDetailsText>São Paulo - SP</ScheduleAddressesItemDetailsText>
+  useEffect(() => setSelectedAddress(selected), [selected]);
 
-                <ScheduleAddressesItemDetailsText>01310-100</ScheduleAddressesItemDetailsText>
-            </ScheduleAddressesItemDetails>
-            <Button
-                color='gray'
-                onPress={() => {}}
-                style={{
-                    minWidth: 50,
-                    alignSelf: 'flex-start',
-                }}
-            >
-                <MaterialIcons
-                    name="edit"
-                    size={24}
-                    color={vars.gray0}
-                />
-            </Button>
-        </ScheduleAddressesItemWrap>
-    )
+  return (
+    <ScheduleAddressesItemWrap onPress={() => onSelected(id)}>
+        <ScheduleAddressesItemInput>
+            <InputRadio
+              checked={selectedAddress}
+              onChange={() => onSelected(id)}
+            />
+        </ScheduleAddressesItemInput>
+        <ScheduleAddressesItemDetails>
+            <ScheduleAddressesItemDetailsText>{street}{number && number.length > 0 && `, ${number}`}</ScheduleAddressesItemDetailsText>
+
+            <ScheduleAddressesItemDetailsText>{district}</ScheduleAddressesItemDetailsText>
+
+            <ScheduleAddressesItemDetailsText>{city} - {state}</ScheduleAddressesItemDetailsText>
+
+            <ScheduleAddressesItemDetailsText>{zipCode}</ScheduleAddressesItemDetailsText>
+        </ScheduleAddressesItemDetails>
+        <Button
+          color='gray'
+          onPress={() => {
+            navigate(Screen.ScheduleAddressesUpdate, {
+              id,
+            })
+          }}
+          style={{
+              minWidth: 50,
+              alignSelf: 'flex-start',
+          }}
+        >
+          <MaterialIcons
+            name="edit"
+            size={24}
+            color={vars.gray0}
+          />
+        </Button>
+    </ScheduleAddressesItemWrap>
+  )
 
 }
 
 export const ScheduleAddressesScreen = () => {
+  useWithAuthenticated(Screen.ScheduleAddresses);
+
+  const { scheduleAt, billingAddressId,
+   setBillingAddressId } = useSchedule();
+  const { token } = useAuth();
   const { navigate } = useDrawerNavigation();
-  const { scheduleAt, timeOptionId, setTimeOptionId } = useSchedule();
   const { catchAxiosError } = useApp();
-  const [items, setItems] = useState<TimeOption[]>([]);
+  const [items, setItems] = useState<Address[]>([]);
   const [loading, setLoading] = useState(false);
 
   const load = useCallback((callback?: () => void) => {
 
-    if (scheduleAt) {
+    if (token) {
 
       setLoading(true);
 
-      axios.get<TimeOption[]>("/time-options", {
+      axios.get<Address[]>("/me/addresses", {
         baseURL: vars.baseURL,
-        params: {
-          day: getDay(scheduleAt),
-        }
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       })
       .then(({ data }) => setItems(data))
       .catch(catchAxiosError)
@@ -113,7 +149,7 @@ export const ScheduleAddressesScreen = () => {
 
     }
 
-  }, [scheduleAt]);
+  }, [token]);
 
   useScreenFocus(() => {
 
@@ -124,12 +160,12 @@ export const ScheduleAddressesScreen = () => {
     
     load();
 
-  }, []);
+  }, [load]);
 
   return (
     <Layout
       header={
-        <Header onPressBack={() => navigate(Screen.ScheduleNew)}
+        <Header onPressBack={() => navigate(Screen.ScheduleServices)}
         />
       }
       onRefresh={(finished) => load(finished)}>
@@ -140,16 +176,19 @@ export const ScheduleAddressesScreen = () => {
         <PageForm>
             <ScheduleAddressesHeader>
                 <Button
-                    color="green"
-                    onPress={() => navigate(Screen.ScheduleAddressesCreate)}
+                  color="green"
+                  onPress={() => navigate(Screen.ScheduleAddressesCreate)}
                 >
-                    NOVO ENDEREÇO
+                  NOVO ENDEREÇO
                 </Button>
             </ScheduleAddressesHeader>
-            {[1, 2].map((item, index) => (
-                <ScheduleAddressesItem
-                    key={index}
-                />
+            {items.map((item, index) => (
+              <ScheduleAddressesItem
+                key={index}
+                data={item}
+                selected={billingAddressId === item.id}
+                onSelected={(addressId) => setBillingAddressId(addressId)}
+              />
             ))}
         </PageForm>
       </Page>
@@ -161,7 +200,7 @@ export const ScheduleAddressesScreen = () => {
           },
           {
             ...ContinueButton,
-            onPress: () => navigate(Screen.ScheduleServices),
+            onPress: () => navigate(Screen.SchedulePayment),
             disabled: loading,
             loading,
           },

@@ -18,6 +18,8 @@ export const ScheduleServiceItem = ({
   }: ScheduleServiceItemProps) => {
     const [isSelected, setIsSelected] = useState(selected);
   
+    useEffect(() => setIsSelected(selected), [selected]);
+
     useEffect(() => {
       if (typeof onChange === 'function') {
         onChange(isSelected);

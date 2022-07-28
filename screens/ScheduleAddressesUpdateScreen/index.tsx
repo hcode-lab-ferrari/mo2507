@@ -25,7 +25,7 @@ const ScheduleAddressesZipCode = styled.View`
     align-items: center;
 `;
 
-export const ScheduleAddressesCreateScreen = () => {
+export const ScheduleAddressesUpdateScreen = ({ route }) => {
   const { navigate } = useDrawerNavigation();
   const { catchAxiosError } = useApp();
   const { setBillingAddressId } = useSchedule();
@@ -44,7 +44,7 @@ export const ScheduleAddressesCreateScreen = () => {
 
     setLoading(true);
 
-    axios.post<Address>("/addresses", {
+    axios.put<Address>(`/addresses/${route.params.id}`, {
       zipCode,
       street,
       number,
@@ -111,6 +111,42 @@ export const ScheduleAddressesCreateScreen = () => {
 
   }, [zipCode]);
 
+    const loadAddress = useCallback((addressId: number, callback?: () => void) => {
+
+        if (addressId) {
+
+            setLoading(true);
+
+            axios.get<Address>(`/addresses/${addressId}`, {
+                baseURL: vars.baseURL,
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
+            .then(({ data }) => {
+
+                setZipCode(data.zipCode)
+                setStreet(data.street);
+                if (data.number) setNumber(data.number);
+                setDistrict(data.district);
+                if (data.complement) setComplement(data.complement);
+                setCity(data.city);
+                setState(data.state);
+                setCountry(data.country);
+
+            })
+            .catch(catchAxiosError)
+            .finally(() => {
+                setLoading(false);
+                if (typeof callback === 'function') {
+                callback();          
+                }
+            });
+
+        }
+
+    }, [zipCode]);
+
   useEffect(() => {
 
     if (zipCode.replace('-', '').length === 8) {
@@ -118,6 +154,8 @@ export const ScheduleAddressesCreateScreen = () => {
     }
 
   }, [zipCode]);
+
+  useEffect(() => loadAddress(route.params.id), [route]);
 
   return (
     <Layout
@@ -127,7 +165,7 @@ export const ScheduleAddressesCreateScreen = () => {
       }
       onRefresh={(finished) => load(finished)}>
       <Page
-        title="NOVO ENDEREÇO"
+        title="EDITAR ENDEREÇO"
         color="blue"
     >
         <PageForm>
@@ -228,7 +266,7 @@ export const ScheduleAddressesCreateScreen = () => {
             onPress: () => onSubmit(),
             disabled: loading,
             loading,
-            text: 'CADASTRAR',
+            text: 'Atualizar',
           },
         ]}
       />
