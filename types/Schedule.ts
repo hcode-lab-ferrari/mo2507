@@ -1,6 +1,7 @@
 import { Address } from './Address';
 import { PaymentSituation } from './PaymentSituation';
 import { Person } from './Person';
+import { ScheduleService } from './ScheduleService';
 import { TimeOption } from './TimeOption';
 
 export type Schedule = {
@@ -22,4 +23,5 @@ export type Schedule = {
   timeOption?: TimeOption;
   paymentSituation?: PaymentSituation;
   billingAddress?: Address;
+  ScheduleService?: ScheduleService[];
 };

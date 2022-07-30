@@ -59,7 +59,7 @@ export const DrawerCustom = (props) => {
             <DrawerMenu>
               <DrawerItem
                 label="Agendamentos"
-                onPress={() => props.navigation.navigate(Screen.Home)}
+                onPress={() => props.navigation.navigate(Screen.Schedules)}
                 labelStyle={styles.drawerItemLabel}
               />
               <DrawerItem
@@ -69,12 +69,12 @@ export const DrawerCustom = (props) => {
               />
               <DrawerItem
                 label="Mudar Foto"
-                onPress={() => props.navigation.navigate(Screen.Services)}
+                onPress={() => props.navigation.navigate(Screen.ChangePhoto)}
                 labelStyle={styles.drawerItemLabel}
               />
               <DrawerItem
                 label="Alterar Senha"
-                onPress={() => props.navigation.navigate(Screen.Services)}
+                onPress={() => props.navigation.navigate(Screen.ChangePassword)}
                 labelStyle={styles.drawerItemLabel}
               />
             </DrawerMenu>

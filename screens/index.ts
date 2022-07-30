@@ -10,12 +10,15 @@ export enum Screen {
   SchedulePayment = 'SchedulePayment',
   ScheduleSummary = 'ScheduleSummary',
   ScheduleComplete = 'ScheduleComplete',
+  Schedules = 'Schedules',
   Auth = 'Auth',
   AuthEmail = 'AuthEmail',
   AuthRegister = 'AuthRegister',
   AuthLogin = 'AuthLogin',
   AuthForget = 'AuthForget',
   Profile = 'Profile',
+  ChangePassword = 'ChangePassword',
+  ChangePhoto = 'ChangePhoto',
 }
 
 export const Screens = {
@@ -30,10 +33,13 @@ export const Screens = {
   [Screen.SchedulePayment]: undefined,  
   [Screen.ScheduleSummary]: undefined,
   [Screen.ScheduleComplete]: undefined,
+  [Screen.Schedules]: undefined,
   [Screen.Auth]: undefined,
   [Screen.AuthEmail]: undefined,
   [Screen.AuthRegister]: undefined,
   [Screen.AuthLogin]: undefined,
   [Screen.AuthForget]: undefined,
   [Screen.Profile]: undefined,
+  [Screen.ChangePassword]: undefined,
+  [Screen.ChangePhoto]: undefined,
 };

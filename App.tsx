@@ -19,6 +19,9 @@ import { ScheduleAddressesScreen } from './screens/ScheduleAddressesScreen';
 import { ScheduleAddressesCreateScreen } from './screens/ScheduleAddressesCreateScreen';
 import { ScheduleAddressesUpdateScreen } from './screens/ScheduleAddressesUpdateScreen';
 import { SchedulePaymentScreen } from './screens/SchedulePaymentScreen';
+import { SchedulesScreen } from './screens/SchedulesScreen';
+import { ChangePasswordScreen } from './screens/ChangePasswordScreen';
+import { ChangePhotoScreen } from './screens/ChangePhotoScreen';
 
 const Drawer = createDrawerNavigator<typeof Screens>();
 
@@ -77,8 +80,14 @@ export default function App() {
                 name={Screen.ScheduleComplete}
                 component={ScheduleCompleteScreen}
               />
+              <Drawer.Screen
+                name={Screen.Schedules}
+                component={SchedulesScreen}
+              />
               <Drawer.Screen name={Screen.Auth} component={AuthScreen} />
               <Drawer.Screen name={Screen.Profile} component={ProfileScreen} />
+              <Drawer.Screen name={Screen.ChangePassword} component={ChangePasswordScreen} />
+              <Drawer.Screen name={Screen.ChangePhoto} component={ChangePhotoScreen} />
             </Drawer.Navigator>
           </ScheduleProvider>
         </AuthProvider>

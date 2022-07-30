@@ -76,7 +76,7 @@ export const ScheduleCompleteScreen = () => {
           {
             text: 'agendamentos',
             color: 'green',
-            onPress: () => navigate(Screen.ScheduleComplete),
+            onPress: () => navigate(Screen.Schedules),
           },
         ]}
       />
