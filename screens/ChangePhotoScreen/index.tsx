@@ -20,6 +20,8 @@ import { vars } from '../../values';
 import noPhoto from '../../assets/no-photo.jpg';
 import { Button } from '../../components/Button';
 import { Platform, TouchableOpacity } from 'react-native';
+import { getPhotoURL } from '../../components/DrawerCustom/getPhotoURL';
+import * as ImagePicker from 'expo-image-picker';
 
 const CurrentPhoto = styled.Image`
     width: 200px;
@@ -41,6 +43,70 @@ export const ChangePhotoScreen = (props) => {
   const { showToast, catchAxiosError } = useApp();
   const [loading, setLoading] = useState(false);
 
+  const [image, setImage] = useState<null | ImagePicker.ImageInfo>(null);
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result);
+    }
+  };
+
+  const pickCamera = async () => {
+    const result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.cancelled) {
+      setImage(result);
+    }
+  };
+
+    const onSubmit = useCallback(() => {
+
+        if (image === null) {
+            return;
+        }
+        
+        setLoading(true);
+
+        const formData = new FormData();
+
+        formData.append('file', {
+            uri: Platform.OS === 'android' ? image.uri : 'file://' + image.uri,
+            name: 'photo.jpg',
+            type: 'image/jpeg',
+        } as any);
+
+        axios
+        .put<User>(`/auth/photo`, formData, {
+            baseURL: vars.baseURL,
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        .then(({ data }) => {
+            setUser({
+                ...user!,
+                photo: data?.photo,
+            });
+            showToast('Foto atualizada com sucesso.');
+            setImage(null);
+        })
+        .catch(catchAxiosError)
+        .finally(() => setLoading(false));
+    }, [image]);
+
   return (
     <Layout
       header={
@@ -51,14 +117,14 @@ export const ChangePhotoScreen = (props) => {
       <Page title="mudar foto">
         <PageForm>
             <PageTitle title="Foto Atual" />
-            <TouchableOpacity>
-                {/* <CurrentPhoto source={user?.photo ? { uri }} /> */}
+            <TouchableOpacity onPress={() => pickImage()}>
+                <CurrentPhoto source={image ? image : user?.photo ? { uri: getPhotoURL(user?.photo) } : noPhoto} />
             </TouchableOpacity>
             <Fields>
-                <Button color="green">
+                <Button color="green" onPress={() => pickImage()}>
                     Escolher Foto
                 </Button>
-                <Button color="green">
+                <Button color="green" onPress={() => pickCamera()}>
                     Tirar Foto
                 </Button>
             </Fields>
@@ -71,7 +137,7 @@ export const ChangePhotoScreen = (props) => {
             onPress: () => props.navigation.navigate(Screen.Home),
           },
           {
-            onPress: () => {},
+            onPress: () => onSubmit(),
             text: 'Salvar',
             color: 'black',
             loading,
