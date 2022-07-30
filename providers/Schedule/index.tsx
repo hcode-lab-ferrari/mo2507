@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { ScheduleContext } from '../../contexts/Schedule';
+import { Schedule } from '../../types/Schedule';
 
 type ScheduleProviderProps = {
   children: React.ReactNode;
@@ -10,6 +11,10 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
   const [timeOptionId, setTimeOptionId] = useState<number | null>(null);
   const [services, setServices] = useState<number[]>([]);
   const [billingAddressId, setBillingAddressId] = useState<number | null>(null);
+  const [cardFirstSixDigits, setCardFirstSixDigits] = useState('');
+  const [cardLastFourDigits, setCardLastFourDigits] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [schedule, setSchedule] = useState<Schedule | null>(null);
 
   const addService = useCallback(
     (serviceId: number) => {
@@ -20,9 +25,12 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
     [services, setServices]
   );
 
-  const removeService = useCallback((serviceId: number) => {
-    setServices([...services.filter((id) => id !== serviceId)]);
-  }, [services, setServices]);
+  const removeService = useCallback(
+    (serviceId: number) => {
+      setServices([...services.filter((id) => id !== serviceId)]);
+    },
+    [services, setServices]
+  );
 
   return (
     <ScheduleContext.Provider
@@ -37,6 +45,14 @@ export const ScheduleProvider = ({ children }: ScheduleProviderProps) => {
         removeService,
         billingAddressId,
         setBillingAddressId,
+        cardFirstSixDigits,
+        setCardFirstSixDigits,
+        cardLastFourDigits,
+        setCardLastFourDigits,
+        paymentMethod,
+        setPaymentMethod,
+        schedule,
+        setSchedule,
       }}
     >
       {children}

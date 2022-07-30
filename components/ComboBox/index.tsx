@@ -36,7 +36,6 @@ export const ComboBox = ({
   const [value, setValue] = useState(selectedValue);
   const [focused, setFocused] = useState(false);
 
-  useEffect(() => setValue(selectedValue), [selectedValue]);
   useEffect(() => {
     if (typeof onChange === 'function') {
       onChange(value, index);
