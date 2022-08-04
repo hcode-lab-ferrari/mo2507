@@ -1,17 +1,17 @@
 import { Screen } from '..';
+import { Contact } from '../../components/Contact';
 import { Footer } from '../../components/Footer';
 import { Header } from '../../components/Header';
-import { ScheduleService } from '../../components/ScheduleService';
 import { Layout } from '../../providers/Layout';
 
-export const ServicesScreen = (props) => {
+export const ContactScreen = (props) => {
   return (
     <Layout
       header={
         <Header onPressBack={() => props.navigation.navigate(Screen.Home)} />
       }
     >
-      <ScheduleService />
+      <Contact />
       <Footer />
     </Layout>
   );

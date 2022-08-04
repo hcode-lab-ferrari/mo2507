@@ -22,6 +22,7 @@ import { SchedulePaymentScreen } from './screens/SchedulePaymentScreen';
 import { SchedulesScreen } from './screens/SchedulesScreen';
 import { ChangePasswordScreen } from './screens/ChangePasswordScreen';
 import { ChangePhotoScreen } from './screens/ChangePhotoScreen';
+import { ContactScreen } from './screens/ContactScreen';
 
 const Drawer = createDrawerNavigator<typeof Screens>();
 
@@ -44,6 +45,7 @@ export default function App() {
                 name={Screen.Services}
                 component={ServicesScreen}
               />
+              <Drawer.Screen name={Screen.Contact} component={ContactScreen} />
               <Drawer.Screen
                 name={Screen.ScheduleNew}
                 component={ScheduleNewScreen}
@@ -86,8 +88,14 @@ export default function App() {
               />
               <Drawer.Screen name={Screen.Auth} component={AuthScreen} />
               <Drawer.Screen name={Screen.Profile} component={ProfileScreen} />
-              <Drawer.Screen name={Screen.ChangePassword} component={ChangePasswordScreen} />
-              <Drawer.Screen name={Screen.ChangePhoto} component={ChangePhotoScreen} />
+              <Drawer.Screen
+                name={Screen.ChangePassword}
+                component={ChangePasswordScreen}
+              />
+              <Drawer.Screen
+                name={Screen.ChangePhoto}
+                component={ChangePhotoScreen}
+              />
             </Drawer.Navigator>
           </ScheduleProvider>
         </AuthProvider>

@@ -19,6 +19,7 @@ export enum Screen {
   Profile = 'Profile',
   ChangePassword = 'ChangePassword',
   ChangePhoto = 'ChangePhoto',
+  Contact = 'Contact',
 }
 
 export const Screens = {
@@ -27,10 +28,10 @@ export const Screens = {
   [Screen.ScheduleNew]: undefined,
   [Screen.ScheduleTimeOptions]: undefined,
   [Screen.ScheduleServices]: undefined,
-  [Screen.ScheduleAddresses]: undefined,  
-  [Screen.ScheduleAddressesCreate]: undefined,  
-  [Screen.ScheduleAddressesUpdate]: { id: 0, },  
-  [Screen.SchedulePayment]: undefined,  
+  [Screen.ScheduleAddresses]: undefined,
+  [Screen.ScheduleAddressesCreate]: undefined,
+  [Screen.ScheduleAddressesUpdate]: { id: 0 },
+  [Screen.SchedulePayment]: undefined,
   [Screen.ScheduleSummary]: undefined,
   [Screen.ScheduleComplete]: undefined,
   [Screen.Schedules]: undefined,
@@ -42,4 +43,5 @@ export const Screens = {
   [Screen.Profile]: undefined,
   [Screen.ChangePassword]: undefined,
   [Screen.ChangePhoto]: undefined,
+  [Screen.Contact]: undefined,
 };
