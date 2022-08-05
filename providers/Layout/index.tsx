@@ -58,7 +58,7 @@ export const Layout = ({
           <LayoutContent>{children}</LayoutContent>
         </SafeAreaView>
       </LayoutScrollView>
-      <StatusBar style="auto" />
+      <StatusBar style="dark" />
       {header !== undefined && header}
     </LayoutContext.Provider>
   );

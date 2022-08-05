@@ -16,6 +16,7 @@ import styled from 'styled-components/native';
 import { Button } from '../Button';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Dimensions } from 'react-native';
+import { TouchableHighlight } from 'react-native-gesture-handler';
 
 const CalendarHeader = styled.View`
   padding: ${vars.spacePx};
